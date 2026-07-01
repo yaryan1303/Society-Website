@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: society_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-society_db}
+      POSTGRES_USER: ${DB_USERNAME:-society}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-society}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-society} -d ${DB_NAME:-society_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Backend and frontend services are added at the end of the build (step 10),
+  # once their Dockerfiles exist. Until then, run them locally:
+  #   backend:  cd backend && mvn spring-boot:run
+  #   frontend: cd frontend && npm run dev
+  backend:
+    build: ./backend
+    container_name: society_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-society_db}
+      DB_USERNAME: ${DB_USERNAME:-society}
+      DB_PASSWORD: ${DB_PASSWORD:-society}
+      JWT_SECRET: ${JWT_SECRET:-change-me-dev-secret-key-please-override-0123456789abcdef}
+      JWT_EXPIRY_MIN: ${JWT_EXPIRY_MIN:-240}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:5173}
+      MAIL_ENABLED: ${MAIL_ENABLED:-false}
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-no-reply@esicsociety.local}
+      ADMIN_ACCOUNT_NO: ${ADMIN_ACCOUNT_NO:-ADMIN001}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@12345}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@esicsociety.local}
+      COMPULSORY_DEPOSIT_DEFAULT: ${COMPULSORY_DEPOSIT_DEFAULT:-1500}
+      LOAN_ANNUAL_RATE_PCT: ${LOAN_ANNUAL_RATE_PCT:-8}
+      SEED_DEMO: ${SEED_DEMO:-true}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:4173}
+    ports:
+      - "8080:8080"
+    profiles: ["full"]
+
+  frontend:
+    build: ./frontend
+    container_name: society_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    profiles: ["full"]
+
+volumes:
+  db_data:

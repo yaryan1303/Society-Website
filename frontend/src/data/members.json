@@ -1,0 +1,12 @@
+[
+  { "name": "Virender Dahiya",     "designation": "President",        "photo": "/members/virender-dahiya.jpg" },
+  { "name": "Yogesh Kumar Yadav",  "designation": "Secretary",        "photo": "/members/yogesh-kumar-yadav.jpg" },
+  { "name": "Sona Kumar Singh",    "designation": "Vice President",   "photo": "/members/sona-kumar-singh.jpg" },
+  { "name": "Umesh Chaurasia",     "designation": "Accountant",       "photo": "/members/umesh-chaurasia.jpg" },
+  { "name": "Kamlesh Kumar",       "designation": "Treasurer",        "photo": "/members/kamlesh-kumar.jpg" },
+  { "name": "Aaditya Paliwal",     "designation": "Executive Member", "photo": "/members/aaditya-paliwal.jpg" },
+  { "name": "Ashish Kumar",        "designation": "Executive Member", "photo": "/members/ashish-kumar.jpg" },
+  { "name": "Shrikant Gupta",      "designation": "Executive Member", "photo": "/members/shrikant-gupta.jpg" },
+  { "name": "Shivam Kumar",        "designation": "Executive Member", "photo": "/members/shivam-kumar.jpg" },
+  { "name": "Vivek Kumar Pandey",  "designation": "Executive Member", "photo": "/members/vivek-kumar-pandey.jpg" }
+]

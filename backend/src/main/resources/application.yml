@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: ams-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/society_db_1}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root@1824}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-me-dev-secret-key-please-override-0123456789abcdef0123456789}
+    expiry-minutes: ${JWT_EXPIRY_MIN:240}
+  base-url: ${APP_BASE_URL:http://localhost:5173}
+  cors-allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}
+  admin:
+    account-no: ${ADMIN_ACCOUNT_NO:ADMIN001}
+    password: ${ADMIN_PASSWORD:Admin@12345}
+    email: ${ADMIN_EMAIL:admin@esicsociety.local}
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    from: ${MAIL_FROM:no-reply@esicsociety.local}
+  compulsory-deposit-default: ${COMPULSORY_DEPOSIT_DEFAULT:1500}
+  loan-annual-rate-pct: ${LOAN_ANNUAL_RATE_PCT:8}
+  reset-token-expiry-minutes: ${RESET_TOKEN_EXPIRY_MIN:60}
+  seed-demo: ${SEED_DEMO:true}
+
+logging:
+  level:
+    org.flywaydb: info
+    com.esicsociety.ams: info
